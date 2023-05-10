@@ -57,10 +57,10 @@ public class AccountServiceImpl implements AccountService {
         	throw new BusinessException("존재하는 계좌번호입니다.");
 
         // 2) 고객정보 조회 (계좌테이블에 '고객이름' 저장을 위해)
-        //Customer customer = customerRestClient.retrieveCustomer(account.getCstmId());
+        //Customer customer = customerComposite.retrieveCustomer(account.getCstmId());
         
-        /* TODO : curtomerCompositie Class 대신 FeignClient를 사용하여 고객 정보 조회 */
-
+        Customer customer = customerFeignClient.retrieveCustomer(account.getCstmId());
+       
         account.setCstmNm(customer.getCstmNm());
         
         // 3) 계좌 생성
@@ -74,7 +74,7 @@ public class AccountServiceImpl implements AccountService {
         transactionHistory.setTrnsAmt(account.getAcntBlnc());
         transactionHistory.setAcntBlnc(account.getAcntBlnc());
         transactionHistory.setTrnsBrnch("마곡본점");
-        
+
         // 3-1) 계좌 생성 금액을 입금 처리
         this.createTransactionHistory(transactionHistory);
         

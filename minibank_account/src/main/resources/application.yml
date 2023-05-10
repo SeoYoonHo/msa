@@ -13,6 +13,7 @@ spring:
     password: admin1234
     url: jdbc:log4jdbc:postgresql://${POSTGRES}:5432/account
   #Spring Cloud Loadbalancer
+  #TODO : Spring Cloud Loadbalancer 설정
   cloud:
     loadbalancer:      
       health-check:
@@ -32,6 +33,7 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: 'true'
 #Customer API URL
+#TODO: customer api url 수정
 customer:
   api:
     url: http://${CUSTOMER}:8075/minibank/customer
@@ -40,11 +42,13 @@ server:
     context-path: /minibank/account
   port: '8075'
 #### enviroment ####
+#TODO: CUSTOMER service name 수정
 CUSTOMER: minibank-customer
 POSTGRES: localhost
 EUREKA: localhost
 
 #eureka
+#TODO : Eureka 설정
 eureka:
   client:
     service-url:
@@ -53,24 +57,33 @@ eureka:
     prefer-ip-address: true
 
 #Resilience4j
-resilience4j.circuitbreaker:
-  configs:
-    default:    
-      failureRateThreshold: 50
-      slowCallRateThreshold: 100
-      slowCallDurationThreshold: 5000 #최소 실패 지연시간에 대한 설정
-      permittedNumberOfCallsInHalfOpenState: 4
-      maxWaitDurationInHalfOpenState: 1000
-      slidingWindowType: COUNT_BASED
-      slidingWindowSize: 10
-      minimumNumberOfCalls: 5 #실패 허용횟수에 대한 설정 이 횟수가 넘어가는 실패가 발생하면 fallback메소드가 호출된다.
-      waitDurationInOpenState: 60000
-  instances:
-    customCircuitBreaker:
-      baseConfig: default
+#TODO : Resilience4j 설정
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        failureRateThreshold: 50
+        slowCallRateThreshold: 100
+        slowCallDurationThreshold: 5000 #최소 실패 지연시간에 대한 설정
+        permittedNumberOfCallsInHalfOpenState: 4
+        maxWaitDurationInHalfOpenState: 1000
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5 #실패 허용횟수에 대한 설정 이 횟수가 넘어가는 실패가 발생하면 fallback메소드가 호출된다.
+        waitDurationInOpenState: 60000
+    instances:
+      customCircuitBreaker:
+        baseConfig: default
 
 #TODO: Openfeign
 #openfeign setting
 #connetion try timeout 설정 30초
 #connetion read timeout(최대 작업 시간) 설정 30초
-
+feign:
+  circuitbreaker:
+    enabled: true
+  client:
+    config:
+      default:
+        connect-timeout: 30000
+        read-timeout: 30000
