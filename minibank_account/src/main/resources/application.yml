@@ -12,6 +12,14 @@ spring:
     username: postgres
     password: admin1234
     url: jdbc:log4jdbc:postgresql://${POSTGRES}:5432/account
+  #Spring Cloud Loadbalancer
+  #TODO : Spring Cloud Loadbalancer 설정
+  cloud:
+    loadbalancer:      
+      health-check:
+        interval: 30s
+      ribbon:
+        enabled: false
 springdoc:
   api-docs:
     path: /api-docs
@@ -24,22 +32,32 @@ mybatis:
   mapper-locations: classpath:sql/*.xml
   configuration:
     map-underscore-to-camel-case: 'true'
+#Customer API URL
+#TODO: customer api url 수정
 customer:
   api:
-    url: http://${CUSTOMER}/minibank/customer
+    url: http://${CUSTOMER}:8075/minibank/customer
 server:
   servlet:
     context-path: /minibank/account
   port: '8075'
+#### enviroment ####
+#TODO: CUSTOMER service name 수정
 CUSTOMER: minibank-customer
 POSTGRES: localhost
 EUREKA: localhost
 
 #eureka
 #TODO : Eureka 설정
+eureka:
+  client:
+    service-url:
+      defaultZone : http://${EUREKA}:8761/eureka
+  instance:
+    prefer-ip-address: true
 
-
-#Resilience4j 설정
+#Resilience4j
+#TODO : Resilience4j 설정
 resilience4j.circuitbreaker:
   configs:
     default:    
@@ -50,7 +68,7 @@ resilience4j.circuitbreaker:
       maxWaitDurationInHalfOpenState: 1000
       slidingWindowType: COUNT_BASED
       slidingWindowSize: 10
-      minimumNumberOfCalls: 1 #실패 허용횟수에 대한 설정 이 횟수가 넘어가는 실패가 발생하면 fallback메소드가 호출된다.
+      minimumNumberOfCalls: 5 #실패 허용횟수에 대한 설정 이 횟수가 넘어가는 실패가 발생하면 fallback메소드가 호출된다.
       waitDurationInOpenState: 60000
   instances:
     customCircuitBreaker:

@@ -34,8 +34,8 @@ public class CustomerController {
     @RequestMapping(method = RequestMethod.GET, path = "/rest/v0.8/{cstmId}")
     public Customer retrieveCustomer(@PathVariable(name = "cstmId") String cstmId) throws Exception{
 
-    	//TODO : 10초 응답지연 코드 추가
-    	Thread.sleep(10000);
+    	//TODO : 10초 응답지연 코드 추가 -> CircuitBreaker 실습 이후 주석처리
+    	// Thread.sleep(10000);
     	
         return customerService.retrieveCustomer(cstmId);
     }

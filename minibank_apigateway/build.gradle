@@ -13,13 +13,20 @@ repositories {
 	mavenCentral()
 }
 
-dependencies {
-	//TODO : eureka server 추가 
-	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'	
-}
-
 ext {
 	set('springCloudVersion', "2021.0.5")
+}
+
+dependencies {
+	//api gateway
+	//TODO : spring-cloud-starter-gateway dependency 추가
+
+	
+	//Actuator
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	
+	//Eureka Client 
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 }
 
 dependencyManagement {
