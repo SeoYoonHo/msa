@@ -15,7 +15,7 @@ repositories {
 
 dependencies {
 	//TODO : eureka server 추가 
-	
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'	
 }
 
 ext {

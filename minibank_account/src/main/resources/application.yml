@@ -12,6 +12,9 @@ spring:
     username: postgres
     password: admin1234
     url: jdbc:log4jdbc:postgresql://${POSTGRES}:5432/account
+  #Spring Cloud Loadbalancer
+  #TODO : Spring Cloud Loadbalancer 설정
+  
 springdoc:
   api-docs:
     path: /api-docs
@@ -24,22 +27,29 @@ mybatis:
   mapper-locations: classpath:sql/*.xml
   configuration:
     map-underscore-to-camel-case: 'true'
+#Customer API URL
+#TODO: customer api url 수정
 customer:
   api:
-    url: http://${CUSTOMER}/minibank/customer
+    url: 
 server:
   servlet:
     context-path: /minibank/account
   port: '8075'
-CUSTOMER: minibank-customer
-POSTGRES: localhost
-EUREKA: localhost
+
+#### enviroment ####
+#TODO: CUSTOMER service name 수정
+
 
 #eureka
-#TODO : Eureka 설정
+eureka:
+  client:
+    service-url:
+      defaultZone : http://${EUREKA}:8761/eureka
+  instance:
+    prefer-ip-address: true
 
-
-#Resilience4j 설정
+#Resilience4j
 resilience4j.circuitbreaker:
   configs:
     default:    
