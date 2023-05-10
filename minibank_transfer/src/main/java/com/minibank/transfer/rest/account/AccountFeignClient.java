@@ -47,8 +47,13 @@ class AccountFeignClientFallbackFactory implements FallbackFactory<AccountFeignC
 				throw new Exception(msg);
 			}
 
-			// TODO: deposit() 개발
-			
+			@Override
+			public TransactionResult deposit(TransactionHistory transaction) throws Exception {				
+				String msg = "feignClient를 이용한 사용자의 입금 서비스 호출에 문제가 있습니다.";
+
+				LOGGER.error(msg, t);
+				throw new Exception(msg);
+			}
 
 			@Override
 			public Account retrieveAccount(String acntNo) throws Exception {

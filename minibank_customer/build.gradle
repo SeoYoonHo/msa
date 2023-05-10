@@ -46,6 +46,7 @@ dependencies {
 		
    	//DB
 	implementation 'org.postgresql:postgresql:42.5.1'
+	
 	//Logging
 	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 	
@@ -67,7 +68,7 @@ dependencies {
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
 	
 	//DevOn Tester
-	compileOnly files('libs/uta_springboot.jar')
+	// compileOnly files('libs/uta_springboot.jar')
 }
 
 ext {

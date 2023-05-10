@@ -18,13 +18,13 @@ public class B2BTransferResultProducer {
     private final Logger LOGGER = LoggerFactory.getLogger(B2BTransferResultProducer.class);
     
     @Autowired
-    private KafkaTemplate<String, TransferHistory> b2bTransferResultKafkaTemplate;
+    private KafkaTemplate<String, TransferHistory> transferResultKafkaTemplate;
 
     @Value(value = "${b2b.transfer.result.topic.name}")
     private String b2bTransferResultTopicName;
 
     public void sendB2BTransferResultMessage(TransferHistory transferResult) {
-        ListenableFuture<SendResult<String, TransferHistory>> future = b2bTransferResultKafkaTemplate.send(b2bTransferResultTopicName, transferResult);
+        ListenableFuture<SendResult<String, TransferHistory>> future = transferResultKafkaTemplate.send(b2bTransferResultTopicName, transferResult);
 
         future.addCallback(new ListenableFutureCallback<SendResult<String, TransferHistory>>() {
             @Override

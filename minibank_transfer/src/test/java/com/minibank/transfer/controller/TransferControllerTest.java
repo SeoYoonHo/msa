@@ -49,7 +49,7 @@ public class TransferControllerTest {
     	BDDMockito.given(transferService.transfer(transferHistory)).willReturn(transferHistory);
     	
     	// when (테스트 수행)
-		mockMvc.perform(post("/transfer/rest/v0.8")
+		mockMvc.perform(post("/rest/v0.8")
     			.contentType(MediaType.APPLICATION_JSON)
     			.content("{\"cstmId\":\"1111\","
     					+ "\"seq\":\"1\","
@@ -104,7 +104,7 @@ public class TransferControllerTest {
     	BDDMockito.given(transferService.btobTransfer(transferHistory)).willReturn(true);
     	
     	// when (테스트 수행)
-		mockMvc.perform(post("/transfer/b2b/rest/v0.8")
+		mockMvc.perform(post("/b2b/rest/v0.8")
     			.contentType(MediaType.APPLICATION_JSON)
     			.content("{\"cstmId\":\"1111\","
     					+ "\"seq\":\"1\","
@@ -152,7 +152,7 @@ public class TransferControllerTest {
     	BDDMockito.given(transferService.retrieveTransferHistoryList(cstmId)).willReturn(historyList);
     	
     	// when (테스트 수행)
-		mockMvc.perform(get("/transfer/transfer-history/rest/v0.8/" + cstmId)
+		mockMvc.perform(get("/transfer-history/rest/v0.8/" + cstmId)
     			.contentType(MediaType.APPLICATION_JSON))
     			.andExpect(MockMvcResultMatchers.status().isOk())
     			// Transfer Service 를 Mock 으로 만들어 놨기 때문에 현재 return 값이 null이다. 따라서 cstmId 값이 null 이므로 1111 값과 달라서 error
@@ -189,7 +189,7 @@ public class TransferControllerTest {
     	BDDMockito.given(transferService.retrieveTransferLimit(cstmId)).willReturn(transferLimit);
     	
     	// when (테스트 수행)
-		mockMvc.perform(get("/transfer/transfer-limit/rest/v0.8/" + cstmId)
+		mockMvc.perform(get("/transfer-limit/rest/v0.8/" + cstmId)
     			.contentType(MediaType.APPLICATION_JSON))
     			.andExpect(MockMvcResultMatchers.status().isOk())
     			// Transfer Service 를 Mock 으로 만들어 놨기 때문에 현재 return 값이 null이다. 따라서 cstmId 값이 null 이므로 1111 값과 달라서 error
@@ -216,7 +216,7 @@ public class TransferControllerTest {
     	BDDMockito.given(transferService.retrieveEnableTransferLimit(cstmId)).willReturn(transferLimit);
     	
     	// when (테스트 수행)
-		mockMvc.perform(get("/transfer/transfer-limit/enable/rest/v0.8/" + cstmId)
+		mockMvc.perform(get("/transfer-limit/enable/rest/v0.8/" + cstmId)
     			.contentType(MediaType.APPLICATION_JSON))
     			.andExpect(MockMvcResultMatchers.status().isOk())
     			// Transfer Service 를 Mock 으로 만들어 놨기 때문에 현재 return 값이 null이다. 따라서 cstmId 값이 null 이므로 1111 값과 달라서 error

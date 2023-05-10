@@ -24,4 +24,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	<delete id="deleteCustomer" parameterType="com.minibank.customer.domain.entity.Customer">
  		DELETE FROM TB_CSTM WHERE CSTM_ID = #{cstmId}
  	</delete>
+ 	
+ 	<select id="selectCustomerList" resultType="com.minibank.customer.domain.entity.Customer">
+		SELECT CSTM_ID, CSTM_NM, CSTM_AGE, CSTM_GND, CSTM_PN, CSTM_ADR
+		  FROM TB_CSTM
+ 		 WHERE 1=1
+ 		<if test='cstmId!=null and !cstmId.equals("")'>
+ 		   AND CSTM_ID = #{cstmId}
+ 		</if> 
+ 		<if test='cstmNm!=null and !cstmNm.equals("")'>
+ 		   AND CSTM_NM LIKE '%'||#{cstmNm}||'%'
+ 		</if> 
+	</select>
+ 
+	<update id="updateCustomer" parameterType="com.minibank.customer.domain.entity.Customer">
+        UPDATE TB_CSTM 
+        SET  CSTM_NM = #{cstmNm}, 
+             CSTM_AGE = #{cstmAge}, 
+             CSTM_GND = #{cstmGnd},
+             CSTM_PN = #{cstmPn}, 
+             CSTM_ADR = #{cstmAdr}
+        WHERE CSTM_ID = #{cstmId}
+    </update> 	
 </mapper>

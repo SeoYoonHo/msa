@@ -13,7 +13,7 @@ import com.minibank.customer.rest.transfer.entity.TransferLimit;
 
 import org.springframework.cloud.openfeign.FallbackFactory;
 
-@FeignClient(name = "minibank-transfer", 
+@FeignClient(name = "minibank-transfer",
 			fallbackFactory = TransferFeignClientFallbackFactory.class)
 public interface TransferFeignClient {
 	

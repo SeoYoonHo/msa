@@ -13,12 +13,16 @@ import com.minibank.customer.rest.account.entity.Account;
 
 import org.springframework.cloud.openfeign.FallbackFactory;
 
+
 @FeignClient(name = "minibank-account", 
 			 fallbackFactory = AccountFeignClientFallbackFactory.class)
 public interface AccountFeignClient {
 
 	@GetMapping("/minibank/account/list/rest/v0.8/{cstmId}")
 	List<Account> retrieveAccountList(@PathVariable("cstmId") String cstmId) throws Exception;
+	
+	@GetMapping("/minibank/account/rest/v0.8/{acntNo}")
+    Account retrieveAccount(@PathVariable("acntNo") String acntNo) throws Exception;
 
 }
 
@@ -33,6 +37,14 @@ class AccountFeignClientFallbackFactory implements FallbackFactory<AccountFeignC
 			public List<Account> retrieveAccountList(String cstmId) throws Exception {
 				// 외부 통신에러시 필요한 후속 조치를 여기서 설정 가능합니다.
 				String msg = "feignClient를 이용한 " + cstmId + " 고객의 계좌 서비스 호출에 문제가 있습니다.";
+				LOGGER.error(msg, t);
+				throw new Exception();
+			}
+			
+			@Override
+			public Account retrieveAccount(String acntNo) throws Exception {
+				// 외부 통신에러시 필요한 후속 조치를 여기서 설정 가능합니다.
+				String msg = "feignClient를 이용한 " + acntNo + " 계좌 조회 호출에 문제가 있습니다.";
 				LOGGER.error(msg, t);
 				throw new Exception();
 			}

@@ -12,6 +12,6 @@ public interface CustomerRepository {
     int deleteCustomer(Customer customer) throws Exception;
     Customer selectCustomer(Customer customer) throws Exception;
     int existsCustomer(Customer customer) throws Exception;
-    List<Customer> selectCustomerList() throws Exception;
+    List<Customer> selectCustomerList(Customer customer) throws Exception;
     int updateCustomer(Customer customer) throws Exception;
 }

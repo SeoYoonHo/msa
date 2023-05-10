@@ -12,8 +12,8 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.listener.ContainerProperties.AckMode;
+import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import com.minibank.transfer.domain.entity.TransferHistory;
@@ -22,32 +22,28 @@ import com.minibank.transfer.domain.entity.TransferHistory;
 @Configuration
 public class KafkaConsumerConfig {
 
-	@Value(value = "${kafka.bootstrapAddress}")
-	private String bootstrapAddress;
+    @Value(value = "${kafka.bootstrapAddress}")
+    private String bootstrapAddress;
 
-	public ConsumerFactory<String, TransferHistory> b2bTransferResultConsumerFactory() {
-		Map<String, Object> props = new HashMap<>();
-		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-		props.put(ConsumerConfig.GROUP_ID_CONFIG, "b2btransfer");
-		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-		props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG,"false");
+    public ConsumerFactory<String, TransferHistory> b2bTransferResultConsumerFactory() {
+        Map<String, Object> props = new HashMap<>();
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "b2btransfer");
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG,"false");
 
-		return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(TransferHistory.class, false));
-	}
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(TransferHistory.class, false));
+    }
 
-	@Bean(name="b2bTransferResultKafkaListenerContainerFactory")
-	public ConcurrentKafkaListenerContainerFactory<String, TransferHistory> b2bTransferResultKafkaListenerContainerFactory() {
-		ConcurrentKafkaListenerContainerFactory<String, TransferHistory> factory = new ConcurrentKafkaListenerContainerFactory<>();
-		factory.setConsumerFactory(b2bTransferResultConsumerFactory());
-		factory.getContainerProperties().setAckMode(AckMode.MANUAL_IMMEDIATE);
-		factory.setCommonErrorHandler(new DefaultErrorHandler());
-
-		return factory;
-	}
-
-	//TODO: lab4 추가실습
-	
-	//TODO: lab4 추가실습
-	
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, TransferHistory> b2bTransferResultKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, TransferHistory> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(b2bTransferResultConsumerFactory());
+        factory.getContainerProperties().setAckMode(AckMode.MANUAL_IMMEDIATE);
+        factory.setCommonErrorHandler(new DefaultErrorHandler());
+        
+        return factory;
+    }
+    
 }

@@ -50,7 +50,10 @@ public class B2BTransferResultConsumer {
             }
             
             transferService.createTransferHistory(transferResult);
-                        
+            
+            /*CQRS*/
+            transferProducer.sendCQRSTansferMessage(transferResult);
+            
           	ack.acknowledge(); // 모든 CRUD 작업이 완료되어야만 kafka의 read off-set 값을 변경하도록 합니다.
         } catch (Exception e) {
         	String msg = "시스템에 예상치 못한 문제가 발생했습니다";

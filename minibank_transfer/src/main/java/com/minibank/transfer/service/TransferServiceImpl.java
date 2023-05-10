@@ -144,7 +144,9 @@ public class TransferServiceImpl implements TransferService {
     	transferHistory.setStsCd("3");
     	// 이체 완료
     	createTransferHistory(transferHistory);
-    
+    	// CQRS
+        transferProducer.sendCQRSTansferMessage(transferHistory);
+            
     	TransferHistory transferResult = new TransferHistory();
     	transferResult.setWthdAcntNo(wthdAcntNo);
     	transferResult.setDpstAcntNo(dpstAcntNo);
@@ -187,7 +189,9 @@ public class TransferServiceImpl implements TransferService {
         transfer.setWthdAcntSeq(wthdAcntSeq);
         // 타행 입금
         transferProducer.sendB2BTansferMessage(transfer);
-      
+        // CQRS 
+        transferProducer.sendCQRSTansferMessage(transfer);
+            
         return true;
 	}
 	
@@ -198,6 +202,37 @@ public class TransferServiceImpl implements TransferService {
 		return transferRepository.selectMaxSeq(transferHistory);
 	}
 	
-	//TODO: lab4 추가실습
-	
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public Boolean btobDeposit(TransferHistory transfer) throws Exception {
+        String dpstAcntNo = transfer.getDpstAcntNo();
+        Long trnfAmt = transfer.getTrnfAmt();
+        String rcvMm = transfer.getRcvMm();
+        transfer.setRcvCstmNm("LG CNS");
+        String cstmId = transfer.getCstmId();
+        int seq = retrieveMaxSeq(cstmId) + 1;
+        
+        transfer.setSeq(seq);
+        // 구분 코드 : 3(타행입금)
+        transfer.setDivCd("3");
+        
+        // 1. 타행입금 내역 저장
+    	createTransferHistory(transfer);
+    	
+        TransactionHistory transaction = new TransactionHistory();
+        TransactionResult depositResult;
+        
+    	// 2. 입금
+        depositResult = accountFeignClient.deposit(
+    			transaction.builder()
+    			.acntNo(dpstAcntNo)
+    			.trnsAmt(trnfAmt)
+    			.trnsBrnch(rcvMm)
+    			.build());
+  
+        // 3. 타행입금처리 결과 publish
+        transferProducer.sendB2BDepositResultMessage(transfer);
+      
+        return true;
+	}
 }
