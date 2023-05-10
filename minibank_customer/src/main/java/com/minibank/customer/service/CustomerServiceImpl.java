@@ -26,22 +26,28 @@ public class CustomerServiceImpl implements CustomerService {
         String cstmId = customer.getCstmId();
         int result = 0;
 
-        if(customerRepository.existsCustomer(customer) > 0){
-            throw new BusinessException("중복 아이디가 존재합니다");
-        }
-
-        customerRepository.insertCustomer(customer);
+        if (existsCustomerId(cstmId))
+            throw new BusinessException("이미 존재하는 아이디입니다.");
         
+        // 고객 정보 저장
+        customerRepository.insertCustomer(customer);
+      
         return result;
     }
 
     @Override
     public Customer retrieveCustomer(String cstmId) throws Exception {
-        Customer customer = new Customer();
+        Customer customer = null;
+  
+        if (!existsCustomerId(cstmId)) 
+            throw new BusinessException("존재하지 않는 아이디입니다.");
 
-        customer.setCstmId(cstmId);
-        customer = customerRepository.selectCustomer(customer);
+        customer = customerRepository.selectCustomer(Customer.builder().cstmId(cstmId).build());
+
+        if (customer == null) 
+            throw new BusinessException("고객 데이터를 조회하지 못했습니다.");
         
+
         return customer;
     }
 
@@ -56,4 +62,23 @@ public class CustomerServiceImpl implements CustomerService {
         return ret;
     }
 
+    @Override
+    public List<Customer> retrieveCustomerList() throws Exception {
+    	List<Customer> customerList = customerRepository.selectCustomerList();
+    	return customerList;
+    }
+       
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+	public int updateCustomer(Customer customer) throws Exception {
+    	String cstmId = customer.getCstmId();
+    	int result = 0;
+
+    	if (!existsCustomerId(cstmId)) 
+    		throw new BusinessException("존재하지 않는 아이디입니다.");
+           
+    	// 고객 정보 수정
+    	result = customerRepository.updateCustomer(customer);
+        return result;
+    }
 }

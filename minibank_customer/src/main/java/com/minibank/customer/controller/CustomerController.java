@@ -41,5 +41,18 @@ public class CustomerController {
     public Boolean existsCustomerId(@PathVariable(name = "cstmId") String cstmId) throws Exception{
     	return customerService.existsCustomerId(cstmId);
     }
+    
+    @Operation(summary = "고객목록조회", description = "고객목록조회")
+    @GetMapping("/rest/v0.8")
+    public List<Customer> retrieveCustomerList() throws Exception{
+        return customerService.retrieveCustomerList();
+    }
+    
+    @Operation(summary = "고객수정", description = "고객수정")
+    @PutMapping("/rest/v0.8/{cstmId}")
+    public Integer updateCustomer(@PathVariable(name = "cstmId") String cstmId, 
+    							   @RequestBody Customer customer) throws Exception{
+         return customerService.updateCustomer(customer);
+    }
 
 }
