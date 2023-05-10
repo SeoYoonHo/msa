@@ -30,16 +30,9 @@ public class B2BTransferResultConsumer {
     @Autowired
     AccountFeignClient accountFeignClient;
 	
-    /**
-     * 타행이체 결과 subscribe
-     * @param transferResult
-     * @param ack
-     * @throws Exception
-     */
-    // TODO 타행이체 결과 수신 구현
-    
+    @KafkaListener(topics = "${b2b.transfer.result.topic.name}", containerFactory = "b2bTransferResultKafkaListenerContainerFactory")
     public void b2bTransferResultListener(TransferHistory transferResult, Acknowledgment ack) throws Exception {
-    	LOGGER.info("Recieved Bank-To-Bank transfer result message: " + transferResult.getWthdAcntNo()+", statusCode:"+transferResult.getStsCd() + "]");
+    	LOGGER.info("Recieved Bank-To-Bank transfer result message: " + transferResult.getWthdAcntNo());
         
         String statusCode = transferResult.getStsCd();
         
@@ -47,7 +40,7 @@ public class B2BTransferResultConsumer {
         	if("2".equals(statusCode)) {
             	String wthdAcntNo = transferResult.getWthdAcntNo();
             	int wthdAcntSeq = transferResult.getWthdAcntSeq();
-            	
+
             	accountFeignClient.cancelWithdraw(
             			TransactionHistory.builder()
 											.acntNo(wthdAcntNo)
@@ -57,7 +50,7 @@ public class B2BTransferResultConsumer {
             }
             
             transferService.createTransferHistory(transferResult);
-            
+                        
           	ack.acknowledge(); // 모든 CRUD 작업이 완료되어야만 kafka의 read off-set 값을 변경하도록 합니다.
         } catch (Exception e) {
         	String msg = "시스템에 예상치 못한 문제가 발생했습니다";

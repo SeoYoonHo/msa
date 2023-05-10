@@ -15,13 +15,20 @@ import com.minibank.transfer.rest.account.entity.TransactionResult;
 
 import org.springframework.cloud.openfeign.FallbackFactory;
 
-// TODO Remote Service와 REST 통신을 위한 Feign Client를 구현
-
+@FeignClient(name = "minibank-account", 
+fallbackFactory = AccountFeignClientFallbackFactory.class)
 public interface AccountFeignClient {
 
+	@PostMapping("/minibank/account/withdraw/rest/v0.8")
 	TransactionResult withdraw(@RequestBody TransactionHistory transaction) throws Exception;
+
+	@PostMapping("/minibank/account/deposit/rest/v0.8")
 	TransactionResult deposit(@RequestBody TransactionHistory transaction) throws Exception;
+
+	@GetMapping("/minibank/account/rest/v0.8/{acntNo}")
 	Account retrieveAccount(@PathVariable("acntNo") String acntNo) throws Exception;
+
+	@PostMapping("/minibank/account/withdraw/cancel/rest/v0.8")
 	int cancelWithdraw(@RequestBody TransactionHistory transaction) throws Exception;	
 
 }
@@ -35,22 +42,28 @@ class AccountFeignClientFallbackFactory implements FallbackFactory<AccountFeignC
 
 			@Override
 			public TransactionResult withdraw(TransactionHistory transaction) throws Exception {				
-				return null;
+				String msg = "feignClient를 이용한 사용자의 출금 서비스 호출에 문제가 있습니다.";
+				LOGGER.error(msg, t);
+				throw new Exception(msg);
 			}
 
-			@Override
-			public TransactionResult deposit(TransactionHistory transaction) throws Exception {				
-				return null;
-			}
+			// TODO: deposit() 개발
+			
 
 			@Override
 			public Account retrieveAccount(String acntNo) throws Exception {
-				return null;
+				String msg = "feignClient를 이용한 " + acntNo + " 계좌 조회 서비스 호출에 문제가 있습니다.";
+
+				LOGGER.error(msg, t);
+				throw new Exception(msg);
 			}
 
 			@Override
 			public int cancelWithdraw(TransactionHistory transaction) throws Exception {
-				return null;
+				String msg = "feignClient를 이용한 " + transaction.getAcntNo() + " 계좌 조회 서비스 호출에 문제가 있습니다.";
+
+				LOGGER.error(msg, t);
+				throw new Exception(msg);
 			}
 		};
 	}

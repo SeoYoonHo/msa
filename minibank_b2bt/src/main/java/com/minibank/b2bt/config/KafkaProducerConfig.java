@@ -37,4 +37,19 @@ public class KafkaProducerConfig {
         return new KafkaTemplate<>(b2bTransferResultProducerFactory());
     }
 
+    @Bean(name="b2bDepositProducerFactory")
+    public ProducerFactory<String, TransferHistory> b2bDepositProducerFactory() {
+        Map<String, Object> configProps = new HashMap<>();
+        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        return new DefaultKafkaProducerFactory<>(configProps);
+    }
+    
+    @Bean(name="b2bDepositKafkaTemplate")
+    public KafkaTemplate<String, TransferHistory> b2bDepositKafkaTemplate() {
+        return new KafkaTemplate<>(b2bDepositProducerFactory());
+    }
+    
+    
 }

@@ -14,4 +14,5 @@ public interface TransferService {
     public Long retrieveTotalTransferAmountPerDay(String cstmId) throws Exception;
     public TransferHistory transfer(TransferHistory transferHistory) throws Exception;
     public Boolean btobTransfer(TransferHistory transferHistory) throws Exception;
+    public Boolean btobDeposit(TransferHistory transferHistory) throws Exception;
 }

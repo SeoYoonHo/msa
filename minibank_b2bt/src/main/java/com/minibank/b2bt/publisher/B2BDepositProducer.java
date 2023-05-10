@@ -13,24 +13,24 @@ import org.springframework.util.concurrent.ListenableFutureCallback;
 import com.minibank.b2bt.domain.TransferHistory;
 
 @Component
-public class B2BTransferResultProducer {
+public class B2BDepositProducer {
 	
-    private final Logger LOGGER = LoggerFactory.getLogger(B2BTransferResultProducer.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(B2BDepositProducer.class);
     
     @Autowired
-    private KafkaTemplate<String, TransferHistory> b2bTransferResultKafkaTemplate;
+    private KafkaTemplate<String, TransferHistory> b2bDepositKafkaTemplate;
 
-    @Value(value = "${b2b.transfer.result.topic.name}")
-    private String b2bTransferResultTopicName;
+    @Value(value = "${b2b.deposit.topic.name}")
+    private String b2bDepositTopicName;
 
-    public void sendB2BTransferResultMessage(TransferHistory transferResult) {
-        ListenableFuture<SendResult<String, TransferHistory>> future = b2bTransferResultKafkaTemplate.send(b2bTransferResultTopicName, transferResult);
+    public void sendB2BDepositMessage(TransferHistory transferResult) {
+        ListenableFuture<SendResult<String, TransferHistory>> future = b2bDepositKafkaTemplate.send(b2bDepositTopicName, transferResult);
 
         future.addCallback(new ListenableFutureCallback<SendResult<String, TransferHistory>>() {
             @Override
             public void onSuccess(SendResult<String, TransferHistory> result) {
                 TransferHistory g = result.getProducerRecord().value();
-                LOGGER.info("Sent message=[" + g.getWthdAcntNo() + "] with offset=[" + result.getRecordMetadata().offset() + "]");
+                LOGGER.info("Sent b2bDeposit message=[" + g.getDpstAcntNo() + "] with offset=[" + result.getRecordMetadata().offset() + "]");
             }
 
             @Override

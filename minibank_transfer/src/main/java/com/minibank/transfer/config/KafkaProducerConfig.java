@@ -23,7 +23,7 @@ public class KafkaProducerConfig {
     @Value(value = "${kafka.bootstrapAddress}")
     private String bootstrapAddress;
     
-    @Bean
+    @Bean(name="transferProducerFactory")
     public ProducerFactory<String, TransferHistory> transferProducerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
@@ -32,12 +32,12 @@ public class KafkaProducerConfig {
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
-    @Bean
+    @Bean(name="transferKafkaTemplate")
     public KafkaTemplate<String, TransferHistory> transferKafkaTemplate() {
         return new KafkaTemplate<>(transferProducerFactory());
     }
     
-    @Bean
+    @Bean(name="transferLimitProducerFactory")
     public ProducerFactory<String, TransferLimit> transferLimitProducerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
@@ -46,9 +46,14 @@ public class KafkaProducerConfig {
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
-    @Bean
+    @Bean(name="transferLimitKafkaTemplate")
     public KafkaTemplate<String, TransferLimit> transferLimitKafkaTemplate() {
         return new KafkaTemplate<>(transferLimitProducerFactory());
     }
 
+    
+    //TODO: lab4 추가실습
+
+    //TODO: lab4 추가실습
+    
 }

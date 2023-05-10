@@ -34,7 +34,6 @@ public class TransferServiceImpl implements TransferService {
     CustomerFeignClient customerFeignClient;
     
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public int createTransferHistory(TransferHistory transferHistory) throws Exception {
     	// 이체 내역 생성
     	return transferRepository.insertTransferHistory(transferHistory);
@@ -145,7 +144,7 @@ public class TransferServiceImpl implements TransferService {
     	transferHistory.setStsCd("3");
     	// 이체 완료
     	createTransferHistory(transferHistory);
- 
+    
     	TransferHistory transferResult = new TransferHistory();
     	transferResult.setWthdAcntNo(wthdAcntNo);
     	transferResult.setDpstAcntNo(dpstAcntNo);
@@ -157,9 +156,6 @@ public class TransferServiceImpl implements TransferService {
     	return transferResult;
 	}
 
-	/**
-	 * 타행이체
-	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public Boolean btobTransfer(TransferHistory transfer) throws Exception {
@@ -181,19 +177,17 @@ public class TransferServiceImpl implements TransferService {
         
         // 출금
         withdrawResult = accountFeignClient.withdraw(
-			    			transaction.builder()
-				    			.acntNo(wthdAcntNo)
-				    			.trnsAmt(trnfAmt)
-				    			.trnsBrnch(sndMm)
-				    			.build()
-				    		);
+    			transaction.builder()
+    			.acntNo(wthdAcntNo)
+    			.trnsAmt(trnfAmt)
+    			.trnsBrnch(sndMm)
+    			.build());
         
         int wthdAcntSeq = withdrawResult.getSeq();
         transfer.setWthdAcntSeq(wthdAcntSeq);
-        
-        // 타행입금(publish)
+        // 타행 입금
         transferProducer.sendB2BTansferMessage(transfer);
-            
+      
         return true;
 	}
 	
@@ -203,4 +197,7 @@ public class TransferServiceImpl implements TransferService {
 		
 		return transferRepository.selectMaxSeq(transferHistory);
 	}
+	
+	//TODO: lab4 추가실습
+	
 }
