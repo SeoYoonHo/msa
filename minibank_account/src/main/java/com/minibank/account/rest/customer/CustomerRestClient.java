@@ -11,8 +11,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.minibank.account.rest.customer.entity.Customer;
 
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-
 @Component("customerRestClient")
 public class CustomerRestClient {
 
@@ -30,13 +28,9 @@ public class CustomerRestClient {
     @Lazy
     RestTemplate restTemplate;
     
-    //TODO : CircuitBreaker Annotation추가
 	public Customer retrieveCustomer(String cstmId) throws Exception {
         String apiUrl =  "/rest/v0.8/{cstmId}";
-        return this.restTemplate.getForObject(CUSTOMER_API_URL + apiUrl, Customer.class, cstmId);
+        /* TODO : 고객기본조회 API 호출 후 결과 return */
 	}
-    
-	//TODO : fallback method 추가
-	
-    }
+
 }
