@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
+
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -32,7 +33,6 @@ public class CustomerRestClient {
     @Lazy
     RestTemplate restTemplate;
     
-
     @CircuitBreaker(name = "customCircuitBreaker", fallbackMethod = "fallbackRetrieveCustomer")
 	public Customer retrieveCustomer(String cstmId) throws Exception {
         String apiUrl =  "/rest/v0.8/{cstmId}";

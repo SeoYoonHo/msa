@@ -10,7 +10,8 @@ import com.minibank.account.domain.entity.Account;
 import com.minibank.account.domain.entity.TransactionHistory;
 import com.minibank.account.domain.repository.AccountRepository;
 import com.minibank.account.exception.BusinessException;
-import com.minibank.account.rest.customer.CustomerRestClient;
+
+import com.minibank.account.rest.customer.CustomerFeignClient;
 import com.minibank.account.rest.customer.entity.Customer;
 
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,9 @@ import lombok.RequiredArgsConstructor;
 public class AccountServiceImpl implements AccountService {
 
 	@Autowired private AccountRepository accountRepository;
-	@Autowired private CustomerRestClient customerRestClient;
+
+	//@Autowired private CustomerRestClient customerRestClient;
+	@Autowired private CustomerFeignClient customerFeignClient;
 
     @Override
     public Account retrieveAccount(String acntNo) throws Exception {
@@ -54,14 +57,28 @@ public class AccountServiceImpl implements AccountService {
         	throw new BusinessException("존재하는 계좌번호입니다.");
 
         // 2) 고객정보 조회 (계좌테이블에 '고객이름' 저장을 위해)
-        Customer customer = customerRestClient.retrieveCustomer(account.getCstmId());
+        //Customer customer = customerRestClient.retrieveCustomer(account.getCstmId());
+        
+        /* TODO : curtomerCompositie Class 대신 FeignClient를 사용하여 고객 정보 조회 */
+
         account.setCstmNm(customer.getCstmNm());
         
         // 3) 계좌 생성
         result = accountRepository.insertAccount(account);
         
+        TransactionHistory transactionHistory = new TransactionHistory();
+        transactionHistory.setAcntNo(account.getAcntNo());
+        transactionHistory.setSeq(this.retrieveMaxSeq(account.getAcntNo())+1);
+        transactionHistory.setDivCd("D");  // D : Deposit , W : Withdrawal
+        transactionHistory.setStsCd("1");
+        transactionHistory.setTrnsAmt(account.getAcntBlnc());
+        transactionHistory.setAcntBlnc(account.getAcntBlnc());
+        transactionHistory.setTrnsBrnch("마곡본점");
+        
+        // 3-1) 계좌 생성 금액을 입금 처리
+        this.createTransactionHistory(transactionHistory);
+        
         // 4) 계좌 정보 message send
-
         return result;
     }
 

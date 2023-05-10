@@ -16,14 +16,22 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.minibank.account.domain.entity.Account;
 import com.minibank.account.domain.repository.AccountRepository;
 import com.minibank.account.exception.BusinessException;
+<<<<<<< HEAD
+import com.minibank.account.rest.customer.CustomerFeignClient;
+=======
 import com.minibank.account.rest.customer.CustomerRestClient;
+>>>>>>> lab#2-4
 import com.minibank.account.rest.customer.entity.Customer;
 
 @ExtendWith(MockitoExtension.class)
 class AccountServiceImplTest {
 
     @Mock private AccountRepository accountRepository;
+<<<<<<< HEAD
+    @Mock private CustomerFeignClient customerFeignClient;
+=======
     @Mock private CustomerRestClient customerRestClient;
+>>>>>>> lab#2-4
 
     @InjectMocks
     private AccountServiceImpl accountService;
@@ -43,14 +51,22 @@ class AccountServiceImplTest {
                 .cstmNm(account.getCstmNm()).build();
 
         given(accountRepository.selectAccount(any(Account.class))).willReturn(null);
+<<<<<<< HEAD
+        given(customerFeignClient.retrieveCustomer(anyString())).willReturn(customer);
+=======
         given(customerRestClient.retrieveCustomer(anyString())).willReturn(customer);
+>>>>>>> lab#2-4
         given(accountRepository.insertAccount(account)).willReturn(1);
 
         //when
         accountService.createAccount(account);
 
         //then
+<<<<<<< HEAD
+        verify(customerFeignClient).retrieveCustomer(account.getCstmId());
+=======
         verify(customerRestClient).retrieveCustomer(account.getCstmId());
+>>>>>>> lab#2-4
         verify(accountRepository).insertAccount(account);
     }
 

@@ -20,7 +20,7 @@ ext {
 dependencies {
 	//api gateway
 	//TODO : spring-cloud-starter-gateway dependency 추가
-
+	implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
 	
 	//Actuator
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'

@@ -26,12 +26,35 @@ spring:
             allow-credentials: true
 # TODO : routes 설정
       routes:
-      
+      - id: minibank-account
+        uri: lb://MINIBANK-ACCOUNT
+        predicates:
+        - Path=/minibank/account/**
+      - id: minibank-customer
+        uri: lb://MINIBANK-CUSTOMER
+        predicates:
+        - Path=/minibank/customer/**
+      - id: minibank-cqrs
+        uri: lb://MINIBANK-CQRS
+        predicates:
+        - Path=/minibank/cqrs/**
+      - id: minibank-transfer
+        uri: lb://MINIBANK-TRANSFER
+        predicates:
+        - Path=/minibank/transfer/**
 # Actuator 설정
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+
+ACCOUNT: minibank-account
 APIGATEWAY: localhost
+B2BT: minibank-b2bt
+CQRS: minibank-cqrs
+CUSTOMER: minibank-customer
 EUREKA: localhost
+KAFKA: localhost
+POSTGRES: localhost
+TRANSFER: minibank-transfer
