@@ -26,16 +26,21 @@ public class CustomerServiceImpl implements CustomerService {
         String cstmId = customer.getCstmId();
         int result = 0;
 
-        /* TODO 고객등록 */
+        if(customerRepository.existsCustomer(customer) > 0){
+            throw new BusinessException("중복 아이디가 존재합니다");
+        }
+
+        customerRepository.insertCustomer(customer);
         
         return result;
     }
 
     @Override
     public Customer retrieveCustomer(String cstmId) throws Exception {
-        Customer customer = null;
-  
-        /* TODO 고객기본조회 */
+        Customer customer = new Customer();
+
+        customer.setCstmId(cstmId);
+        customer = customerRepository.selectCustomer(customer);
         
         return customer;
     }
