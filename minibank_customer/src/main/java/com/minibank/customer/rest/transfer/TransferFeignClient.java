@@ -19,8 +19,8 @@ public interface TransferFeignClient {
 	
 	@PostMapping("/minibank/transfer/transfer-limit/rest/v0.8")
 	public Integer createTransferLimit(@RequestBody TransferLimit transferLimit) throws Exception;
-	
-	/*TODO Annotation 추가 */
+
+	@GetMapping("/minibank/transfer/transfer-limit/rest/v0.8/{cstmId}")
 	public TransferLimit retrieveTransferLimit(@PathVariable("cstmId") String cstmId) throws Exception;
 	
 }

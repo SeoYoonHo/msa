@@ -11,8 +11,7 @@ import com.minibank.transfer.exception.SystemException;
 
 import org.springframework.cloud.openfeign.FallbackFactory;
 
-@FeignClient(name = "minibank-customer", 
-//           url="http://localhost:8070", 
+@FeignClient(name = "minibank-customer",  
 			 fallbackFactory = CustomerFeignClientFallbackFactory.class)
 public interface CustomerFeignClient {
 

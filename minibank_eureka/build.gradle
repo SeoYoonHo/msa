@@ -9,13 +9,31 @@ group = 'com.minibank'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
 repositories {
 	mavenCentral()
 }
 
 dependencies {
-	//TODO : eureka server 추가 
-	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'	
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	
+	//eureka
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+	
+	//Lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
 }
 
 ext {

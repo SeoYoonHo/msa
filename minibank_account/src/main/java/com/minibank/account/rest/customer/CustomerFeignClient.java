@@ -13,7 +13,7 @@ import org.springframework.cloud.openfeign.FallbackFactory;
 
 @FeignClient(name = "minibank-customer", fallbackFactory = CustomerFeignClientFallbackFactory.class)
 public interface CustomerFeignClient {
-	    
+
 	@GetMapping("/minibank/customer/rest/v0.8/{cstmId}")
     Customer retrieveCustomer(@PathVariable("cstmId") String cstmId) throws Exception;
 }

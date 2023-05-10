@@ -1,0 +1,75 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.7'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'java'
+	id 'war'
+}
+
+group = 'com.minibank'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	//Kafka
+	compileOnly 'org.springframework.kafka:spring-kafka'
+   	
+	//Json
+	implementation 'com.google.code.gson:gson:2.8.9'
+   	
+	//Lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+   	
+	//Swagger
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.14'
+	
+	//Logging
+	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+	
+	//Actuator
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+			
+	//Resilience4j
+	implementation 'io.github.resilience4j:resilience4j-spring-boot2:1.7.0'
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+	
+	//Spring Cloud Loadbalancer
+	implementation 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
+	
+	//Eureka Client 
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+}
+
+ext { 
+	set('springCloudVersion', "2021.0.5") 
+} 
+
+dependencyManagement { 
+	imports { 
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}" 
+	} 
+}
+
+test {
+	useJUnitPlatform()
+}
+
+jar {
+	enabled=true
+	manifest {
+		attributes 'Main-Class' : 'com.minibank.b2bt.B2BTransferApplication'
+	}
+}
+

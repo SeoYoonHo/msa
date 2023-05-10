@@ -8,6 +8,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
 import com.minibank.customer.rest.account.entity.Account;
 
 import org.springframework.cloud.openfeign.FallbackFactory;
@@ -16,7 +17,7 @@ import org.springframework.cloud.openfeign.FallbackFactory;
 			 fallbackFactory = AccountFeignClientFallbackFactory.class)
 public interface AccountFeignClient {
 
-	/*TODO Annotation 추가*/
+	@GetMapping("/minibank/account/list/rest/v0.8/{cstmId}")
 	List<Account> retrieveAccountList(@PathVariable("cstmId") String cstmId) throws Exception;
 
 }
