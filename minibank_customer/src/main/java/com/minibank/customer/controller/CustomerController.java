@@ -33,6 +33,8 @@ public class CustomerController {
     @Operation(summary = "고객기본조회", description = "고객등록")
     @RequestMapping(method = RequestMethod.GET, path = "/rest/v0.8/{cstmId}")
     public Customer retrieveCustomer(@PathVariable(name = "cstmId") String cstmId) throws Exception{
+
+    	//TODO : 10초 응답지연 코드 추가
         return customerService.retrieveCustomer(cstmId);
     }
 
