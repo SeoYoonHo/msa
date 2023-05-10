@@ -5,7 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
-@EnableFeignClients
+
+/* TODO : FeignClients 활성 Annotation 추가 */
+
 @EnableEurekaClient
 @SpringBootApplication
 public class AccountApplication {

@@ -34,15 +34,10 @@ public class CustomerController {
     @RequestMapping(method = RequestMethod.GET, path = "/rest/v0.8/{cstmId}")
     public Customer retrieveCustomer(@PathVariable(name = "cstmId") String cstmId) throws Exception{
 
+    	//TODO : 10초 응답지연 코드 추가 -> CircuitBreaker 실습 이후 주석처리
     	// Thread.sleep(10000);
     	
         return customerService.retrieveCustomer(cstmId);
-    }
-    
-    @Operation(summary = "고객상세조회", description = "고객상세조회")
-    /*TODO Annotation 추가*/
-    public Customer retrieveCustomerDetail(/*TODO Annotation 추가*/ String cstmId) throws Exception{
-        return customerService.retrieveCustomerDetail(cstmId);
     }
 
     @Operation(summary = "고객존재여부조회", description = "고객존재여부조회")

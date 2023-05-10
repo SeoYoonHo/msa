@@ -44,22 +44,19 @@ dependencies {
 	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 			
 	//Resilience4j
-	//TODO : Resilience4j 의존성 추가
 	implementation 'io.github.resilience4j:resilience4j-spring-boot2:1.7.0'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-aop'
 
 	//Eureka Client
-	//TODO : eureka client 추가
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 	
 	//Spring Cloud Loadbalancer
-	//TODO: Spring Cloud Loadbalancer 의존성 추가
 	implementation 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
 	
 	//OpenFeign
 	//TODO : spring-cloud-starter-openfeign dependency 추가
-	implementation('org.springframework.cloud:spring-cloud-starter-openfeign')
+
 	
 	//Test
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
