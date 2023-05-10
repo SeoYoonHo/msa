@@ -9,12 +9,22 @@ import org.springframework.transaction.annotation.Transactional;
 import com.minibank.customer.domain.entity.Customer;
 import com.minibank.customer.domain.repository.CustomerRepository;
 import com.minibank.customer.exception.BusinessException;
+import com.minibank.customer.rest.account.AccountFeignClient;
+import com.minibank.customer.rest.account.entity.Account;
+import com.minibank.customer.rest.transfer.TransferFeignClient;
+import com.minibank.customer.rest.transfer.entity.TransferLimit;
 
 @Service("customerService")
 public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     CustomerRepository customerRepository;
+    
+    @Autowired
+    TransferFeignClient transferFeignClient;
+
+    @Autowired
+    AccountFeignClient accountFeignClient;
 
     /**
      * @Transactional 어노테이션은 RuntimeException을 상속받은 Exception이 throws 될 때 작동
@@ -32,6 +42,15 @@ public class CustomerServiceImpl implements CustomerService {
         // 고객 정보 저장
         customerRepository.insertCustomer(customer);
       
+        // feign을 이용한 통신시 에러 발생하면 RuntimeException을 상속받은 SystemException throw
+        // 따라서, Transaction Rollback 발생, 또한 Feign은 Hystrix도 연동되어 있음.
+        transferFeignClient.createTransferLimit(
+                                TransferLimit.builder()
+                                    .cstmId(cstmId)
+                                    .oneDyTrnfLmt(new Long(500000000))
+                                    .oneTmTrnfLmt(new Long(50000000))
+                                    .build());
+            
         return result;
     }
 
@@ -48,6 +67,21 @@ public class CustomerServiceImpl implements CustomerService {
             throw new BusinessException("고객 데이터를 조회하지 못했습니다.");
         
 
+        return customer;
+    }
+    
+    @Override
+    public Customer retrieveCustomerDetail(String cstmId) throws Exception {
+        
+        /* TODO 고객정보 조회 */
+    	Customer customer = null;
+    	
+    	/* TODO 이체한도 조회 */
+    	TransferLimit transferLimit = null;
+
+        /* TODO 계좌 목록 조회 */
+        List<Account> accountList = null;
+            
         return customer;
     }
 
