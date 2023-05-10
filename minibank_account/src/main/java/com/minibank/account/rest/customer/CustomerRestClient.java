@@ -30,13 +30,16 @@ public class CustomerRestClient {
     @Lazy
     RestTemplate restTemplate;
     
-    //TODO : CircuitBreaker Annotation추가
+    @CircuitBreaker(name = "customCircuitBreaker", fallbackMethod = "fallbackRetrieveCustomer")
 	public Customer retrieveCustomer(String cstmId) throws Exception {
         String apiUrl =  "/rest/v0.8/{cstmId}";
         return this.restTemplate.getForObject(CUSTOMER_API_URL + apiUrl, Customer.class, cstmId);
 	}
     
 	//TODO : fallback method 추가
-	
+    public Customer fallbackRetrieveCustomer(String cstmId, Throwable t) throws Exception {
+    	String msg = "restTemplate를 이용하여 " + cstmId + "고객정보 조회 서비스 호출에 문제가 있습니다.";
+    	LOGGER.error(msg, t);
+    	throw new Exception();
     }
 }

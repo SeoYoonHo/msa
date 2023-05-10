@@ -26,12 +26,32 @@ mybatis:
     map-underscore-to-camel-case: 'true'
 customer:
   api:
-    url: http://${CUSTOMER}:8076/minibank/customer
-POSTGRES: localhost
+    url: http://${CUSTOMER}/minibank/customer
 server:
   servlet:
     context-path: /minibank/account
   port: '8075'
-CUSTOMER: localhost
+CUSTOMER: minibank-customer
+POSTGRES: localhost
+EUREKA: localhost
 
-#TODO: Resilience4j 설정#
+#eureka
+#TODO : Eureka 설정
+
+
+#Resilience4j 설정
+resilience4j.circuitbreaker:
+  configs:
+    default:    
+      failureRateThreshold: 50
+      slowCallRateThreshold: 100
+      slowCallDurationThreshold: 5000 #최소 실패 지연시간에 대한 설정
+      permittedNumberOfCallsInHalfOpenState: 4
+      maxWaitDurationInHalfOpenState: 1000
+      slidingWindowType: COUNT_BASED
+      slidingWindowSize: 10
+      minimumNumberOfCalls: 1 #실패 허용횟수에 대한 설정 이 횟수가 넘어가는 실패가 발생하면 fallback메소드가 호출된다.
+      waitDurationInOpenState: 60000
+  instances:
+    customCircuitBreaker:
+      baseConfig: default

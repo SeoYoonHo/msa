@@ -35,6 +35,8 @@ public class CustomerController {
     public Customer retrieveCustomer(@PathVariable(name = "cstmId") String cstmId) throws Exception{
 
     	//TODO : 10초 응답지연 코드 추가
+    	Thread.sleep(10000);
+    	
         return customerService.retrieveCustomer(cstmId);
     }
 

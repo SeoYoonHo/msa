@@ -21,51 +21,56 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	//jdbc
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	
 	//mybatis-spring-boot-starter
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
-
+	
 	//commons-collections
 	implementation 'commons-collections:commons-collections:3.2.2'
-	   	
+	
+	//kafka
+	implementation 'org.springframework.kafka:spring-kafka'
+	
 	//Json
 	implementation 'com.google.code.gson:gson:2.8.9'
-   	
+	
 	//Lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
-   	
+	
 	//Swagger
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.14'
-
+		
    	//DB
 	implementation 'org.postgresql:postgresql:42.5.1'
-
 	//Logging
 	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
-			
-	//Resilience4j
-	implementation 'io.github.resilience4j:resilience4j-spring-boot2:1.7.0'
+	
+	//Actuator
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.boot:spring-boot-starter-aop'
-
+	
 	//Eureka Client
 	//TODO : eureka client 추가
-
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+	
+	//Openfeign
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 	
 	//Test
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
-	testImplementation('org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.1.1')
-	testRuntimeOnly('com.h2database:h2')
-
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.projectreactor:reactor-test'
+	testImplementation 'org.springframework.kafka:spring-kafka-test'
+	
 	//DevOn Tester
 	compileOnly files('libs/uta_springboot.jar')
 }
 
 ext {
 	set('springCloudVersion', "2021.0.5")
-}
+} 
 
 dependencyManagement { 
 	imports { 
@@ -80,6 +85,6 @@ test {
 jar {
 	enabled=true
 	manifest {
-		attributes 'Main-Class' : 'com.minibank.account.AccountApplication'
+		attributes 'Main-Class' : 'com.minibank.transfer.TransferApplication'
 	}
 }

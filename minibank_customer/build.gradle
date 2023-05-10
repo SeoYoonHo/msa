@@ -52,12 +52,9 @@ dependencies {
 	//Actuator
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	
-	//Ribbon -> Loadbalancer
-	// implementation 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
-	
-	//Eureka Client, Server
-	// implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-	// implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+	//Eureka Client
+	//TODO : eureka client 추가
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 	
 	//Openfeign
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
@@ -91,4 +88,3 @@ jar {
 		attributes 'Main-Class' : 'com.minibank.customer.CustomerApplication'
 	}
 }
-
