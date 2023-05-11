@@ -48,7 +48,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	
  	<!-- TODO : (추가과제) selectCustomerList Query 작성. TB_CSTM_CQRS, TB_ACNT_CQRS 모두 사용 -->
 	<select id="selectCustomerList" resultType="com.minibank.inquiry.domain.entity.Customer" parameterType="map">
-
+        SELECT CSTM_ID, CSTM_NM, CSTM_AGE, CSTM_GND, CSTM_PN, CSTM_ADR, ONDE_TM_TRNF_LMT, ONE_DY_TRNF_LMT
+        FROM TB_CSTM_CQRS
+        WHERE 1=1
+        <if test='cstmId!=null and !cstmId.equals("")'>
+            AND CSTM_ID = #{cstmId}
+        </if>
+        <if test='cstmNm!=null and !cstmNm.equals("")'>
+            AND CSTM_NM LIKE '%'||#{cstmNm}||'%'
+        </if>
+        <if test='acntNo!=null and !acntNo.equals("")'>
+            AND EXISTS(
+                SELECT 1
+                FROM TB_ACNT_CQRS A
+                WHERE A.CSTM_ID = C.CSTM_ID
+                AND A.ACNT_NO = #{acntNo}
+            )
+        </if>
  	</select>
  	
 </mapper>

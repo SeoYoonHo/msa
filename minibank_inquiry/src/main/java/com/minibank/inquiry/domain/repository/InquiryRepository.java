@@ -19,5 +19,6 @@ public interface InquiryRepository {
 	List<Account> selectAccountList(Account account) throws Exception;
 	
 	/*TODO(추가과제) 전체 계좌목록조회 */
+	List<Customer> selectCustomerList(String cstmId, String cstmNm, String acntNo) throws Exception;
 
 }
